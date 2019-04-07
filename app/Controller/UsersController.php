@@ -30,17 +30,18 @@ class UsersController extends AppController {
 
 	public function register() {
 		if ($this->request->is('post')) {
-			if ($this->User->find('count') > 1) {
+			// ensure first user created is admin
+			if ($this->User->find('count') > 0) {
 				$this->request->data['User']['role'] = 'author';
 			} else {
-				$this->request->data['User']['role'] = 'admin'; // ensure first user created is admin
+				$this->request->data['User']['role'] = 'admin';
 			}
 
 			$this->User->create();
 			if ($this->User->save($this->request->data)) {
 				$this->Flash->success(__('Account created successfully, welcome'));
 				$this->Auth->login();
-				return $this->redirect('/posts');
+				return $this->redirect($this->Auth->redirectUrl());
 			} else {
 				$this->Flash->error(__('Failed to create account, please try again'));
 			}

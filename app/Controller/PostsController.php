@@ -17,7 +17,7 @@ class PostsController extends AppController {
             }
         }
 
-        return parent::isAuthorized($user);
+        return parent::isAuthorized($user); // call original isAuthorized - checks if user is admin
     }
 
     public function index() {
